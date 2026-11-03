@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -349,7 +350,9 @@ fun ActionSheet(
     header: (@Composable () -> Unit)? = null,
     actions: @Composable () -> Unit,
 ) {
-    ModalBottomSheet(onDismissRequest = onDismiss) {
+    // Padding here, not inside, keeps the sheet's height fixed while it settles. A height change
+    // mid-settle leaves isAnimationRunning stuck true, and then every tap on a row starts a drag.
+    ModalBottomSheet(onDismissRequest = onDismiss, modifier = Modifier.statusBarsPadding()) {
         Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(bottom = 12.dp).navigationBarsPadding()) {
             if (header != null) {
                 Box(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) { header() }
